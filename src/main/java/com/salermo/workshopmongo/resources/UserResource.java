@@ -30,7 +30,7 @@ public class UserResource {
 	private UserService service; //Pro controlador Rest acessar o serviço
 	
 	
-	
+	//METODO PARA BUSCAR TODOS OS USUARIOS
 	//RequestMapping atua como porteiro da aplicação
 	@RequestMapping(method=RequestMethod.GET)
 	//Posso usar tbm o GetMapping
@@ -41,6 +41,8 @@ public class UserResource {
 		//ResponseEntity.ok() serve para encapsular uma http de sucesso, ou seja, ela confirma que a requisição foi um sucesso
 		//.body é o corpo da resposta que será retornado pelo Responseentity
  	}
+	
+	//METODO PARA BUSCAR O USUARIO PELO ID
 	//ponho um caminho mais especifico, no caso com o id
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	//Uso o PathVariable para informar que esse id tem que casar com o id da url
@@ -50,8 +52,9 @@ public class UserResource {
 		return ResponseEntity.ok().body(new UserDTO(obj)); 
 		
 	}
-	@RequestMapping( method = RequestMethod.POST)
 	
+	//Metodo para inserir dados pelo POSTMAN
+	@RequestMapping( method = RequestMethod.POST)
 	public ResponseEntity <Void> insert(@RequestBody UserDTO objDto){ 
 		
 		User obj = service.fromDTO(objDto);
@@ -61,5 +64,16 @@ public class UserResource {
 		return ResponseEntity.created(uri).build();
 		
 	}
+	
+	//Metodo para deletar dados
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	//Uso o PathVariable para informar que esse id tem que casar com o id da url
+	public ResponseEntity <Void> delete(@PathVariable String id) throws ObjectNotFoundException{ 
+		
+		service.delete(id);
+		return ResponseEntity.noContent().build(); 
+		
+	}
+	
 	
 }

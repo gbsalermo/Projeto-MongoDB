@@ -31,6 +31,10 @@ public class UserService {
 	public User inset(User obj) {
 		return repo.insert(obj);
 	}
+	public void delete(String id) throws ObjectNotFoundException {
+		findById(id); //só para ele pesquisar primeiro e caso não encontre lançar a exceção
+		repo.deleteById(id);
+	}
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail()); //retorno o id, name e email
 	}
