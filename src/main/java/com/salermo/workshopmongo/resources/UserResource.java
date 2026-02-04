@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.salermo.workshopmongo.domain.User;
 import com.salermo.workshopmongo.dto.UserDTO;
 import com.salermo.workshopmongo.service.UserService;
+
+import javassist.tools.rmi.ObjectNotFoundException;
 
 //Classe Rest
 
@@ -28,13 +31,20 @@ public class UserResource {
 	@RequestMapping(method=RequestMethod.GET)
 	//Posso usar tbm o GetMapping
 	public ResponseEntity <List<UserDTO>> findAll(){ //Agora minha lista vai ser do UserDTO
-		
-		
-		
 		List<User> list = service.findAll(); //Busco no banco de dados e guardo a lista
 		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList()); //aplico uma expressão lambda para converter a lista
 		return ResponseEntity.ok().body(listDto); //Retorno a lista
 		//ResponseEntity.ok() serve para encapsular uma http de sucesso, ou seja, ela confirma que a requisição foi um sucesso
 		//.body é o corpo da resposta que será retornado pelo Responseentity
  	}
+	//ponho um caminho mais especifico, no caso com o id
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	//Uso o PathVariable para informar que esse id tem que casar com o id da url
+	public ResponseEntity <UserDTO> findById(@PathVariable String id) throws ObjectNotFoundException{ 
+		
+		User obj = service.findById(id);
+		return ResponseEntity.ok().body(new UserDTO(obj)); 
+		
+	}
+	
 }
