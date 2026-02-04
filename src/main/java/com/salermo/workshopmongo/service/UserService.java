@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.salermo.workshopmongo.domain.User;
+import com.salermo.workshopmongo.dto.UserDTO;
 import com.salermo.workshopmongo.repository.UserRepository;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -25,5 +26,12 @@ public class UserService {
 	public User findById(String id) throws ObjectNotFoundException {
 		return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado")); 
 		//uso lambda e informo com .orElseThrow que caso nulo lançar a exceção
+	}
+	
+	public User inset(User obj) {
+		return repo.insert(obj);
+	}
+	public User fromDTO(UserDTO objDto) {
+		return new User(objDto.getId(), objDto.getName(), objDto.getEmail()); //retorno o id, name e email
 	}
 }
