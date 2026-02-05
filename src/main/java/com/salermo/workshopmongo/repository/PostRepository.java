@@ -12,5 +12,6 @@ import com.salermo.workshopmongo.domain.Post;
 public interface PostRepository extends MongoRepository<Post, String>{ //Tenho que por qual a clase e o tipo do id
 
 	//Metodo de busca
-	List<Post> findByTitleContaining(String text);
+	List<Post> findByTitleContainingIgnoreCase(String text);
+	//O ignoreCase ignora se é maiuscula ou minuscula
 }
