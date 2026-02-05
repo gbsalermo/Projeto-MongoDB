@@ -1,7 +1,9 @@
 package com.salermo.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.salermo.workshopmongo.dto.AuthorDTO;
+import com.salermo.workshopmongo.dto.CommentDTO;
 
 //Classe post que vai se comunicar com User
 @Document
@@ -22,6 +25,8 @@ public class Post implements Serializable{
 	private String title;
 	private String body;
 	private AuthorDTO author;
+	
+	private List<CommentDTO> comments = new ArrayList<>();
 	
 	//Construtores
 	public Post() {
@@ -77,8 +82,20 @@ public class Post implements Serializable{
 		this.author = author;
 	}
 	
+	public List<CommentDTO> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentDTO> comments) {
+		this.comments = comments;
+	}
+
+	
+	
+	
 	//Hash/equals
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
