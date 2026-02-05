@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.salermo.workshopmongo.domain.Post;
-import com.salermo.workshopmongo.domain.User;
-import com.salermo.workshopmongo.dto.UserDTO;
 import com.salermo.workshopmongo.repository.PostRepository;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -24,5 +22,10 @@ public class PostService {
 	public Post findById(String id) throws ObjectNotFoundException {
 		return repo.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado")); 
 		//uso lambda e informo com .orElseThrow que caso nulo lançar a exceção
+		
+	}
+	//Adiciono o metodo de Busca chamando do repositorio
+	public List<Post> findByTitle(String text){
+		return repo.findByTitleContaining(text);
 	}
 }

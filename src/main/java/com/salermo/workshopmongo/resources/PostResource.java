@@ -1,15 +1,17 @@
 package com.salermo.workshopmongo.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salermo.workshopmongo.domain.Post;
-import com.salermo.workshopmongo.domain.User;
-import com.salermo.workshopmongo.dto.UserDTO;
+import com.salermo.workshopmongo.resources.util.URL;
 import com.salermo.workshopmongo.service.PostService;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -31,6 +33,14 @@ public class PostResource {
 		
 		Post obj = service.findById(id);
 		return ResponseEntity.ok().body(obj); 
+		
+	}
+	@RequestMapping(value="/titlesearch", method = RequestMethod.GET)
+	//Uso o PathVariable para informar que esse id tem que casar com o id da url
+	public ResponseEntity <List<Post>> findByTitle(@RequestParam(value="text", defaultValue="") String text) throws ObjectNotFoundException{ 
+		text = URL.decodeParam(text);
+		List<Post> list = service.findByTitle(text);
+		return ResponseEntity.ok().body(list); 
 		
 	}
 	
