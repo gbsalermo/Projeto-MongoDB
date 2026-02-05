@@ -1,10 +1,13 @@
 package com.salermo.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Id;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 //Classe usuario principal
@@ -21,6 +24,10 @@ public class User implements Serializable{
 	private String name;
 	private String email;
 	
+	//O DbRef: Referencia o outro documento, guardando só o ID de outro documento, não o objeto inteiro
+	//Adiciono tbm o lazy = true para informar que os posts só serao carregados se eu explicitamente acessar eles
+	@DBRef (lazy = true)
+	private List<Post> posts = new ArrayList<>();
 	
 	//Construtores
 	public User() {
@@ -56,6 +63,13 @@ public class User implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 	
 	//Hash&Equals
 	@Override
@@ -74,6 +88,8 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	
 	
 	
 
