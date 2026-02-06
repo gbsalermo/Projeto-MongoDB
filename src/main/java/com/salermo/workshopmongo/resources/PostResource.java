@@ -1,5 +1,6 @@
 package com.salermo.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class PostResource {
 		return ResponseEntity.ok().body(obj); 
 		
 	}
+	//Metodo para pesquisa por titulo
 	@RequestMapping(value="/titlesearch", method = RequestMethod.GET)
 	//Uso o PathVariable para informar que esse id tem que casar com o id da url
 	public ResponseEntity <List<Post>> findByTitle(@RequestParam(value="text", defaultValue="") String text) throws ObjectNotFoundException{ 
@@ -43,5 +45,24 @@ public class PostResource {
 		return ResponseEntity.ok().body(list); 
 		
 	}
+	
+	//metodo para a pesquisa geral
+	
+	@RequestMapping(value="/fullsearch", method = RequestMethod.GET)
+	//Uso o PathVariable para informar que esse id tem que casar com o id da url
+	public ResponseEntity <List<Post>> fullSearch(
+			//Serão 3 parametros nesse caso
+			@RequestParam(value="text", defaultValue="") String text,
+			@RequestParam(value="minDate", defaultValue="") String minDate,
+			@RequestParam(value="maxDate", defaultValue="") String maxDate) throws ObjectNotFoundException{ 
+		//Convertendi
+		text = URL.decodeParam(text);
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+		List<Post> list = service.fullSearch(text, min, max);
+		return ResponseEntity.ok().body(list); 
+		
+	}
+	
 	
 }
